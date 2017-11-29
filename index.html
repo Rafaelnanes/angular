@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html ng-app="myTest">
+
+<head>
+    <!--removeIf(production)-->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!--endRemoveIf(production)-->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="/styles/app.css">
+    <!-- endinject -->
+</head>
+
+<body>
+
+    <!--removeIf(production)-->
+    <!-- bower:js -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-mocks/angular-mocks.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <!-- endbower -->
+    <!--endRemoveIf(production)-->
+
+    <!-- inject:js -->
+    <script src="/app/controllers/controller.js"></script>
+    <!-- endinject -->
+
+
+    <div>
+        <div ng-controller="indexController">
+            <h1>{{hello}}</h1>
+        </div>
+    </div>
+</body>
+
+</html>
