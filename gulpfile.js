@@ -10,10 +10,16 @@ var browserSync = require('browser-sync').create();
 var js = [
     './bower_components/angular/angular.min.js',
     './bower_components/angular-mocks/angular-mocks.js',
+    './bower_components/angular-route/angular-route.js',
     './app/*.js',
     './app/**/*.js',
     './app/**/**/*.js'
 ];
+
+gulp.task('copy-html', function () {
+    return gulp.src('./app/views/**/*.html')
+        .pipe(gulp.dest('./dist/app/views/'));
+});
 
 gulp.task('inject', function () {
     var target = gulp.src('./index.html');
@@ -24,7 +30,7 @@ gulp.task('inject', function () {
         .pipe(gulp.dest('./'));
 });
 
-gulp.task('inject-build', ['minify-css', 'minify-js'], function () {
+gulp.task('inject-build', ['minify-css', 'minify-js', 'copy-html'], function () {
     gulp.src('./index.html')
         .pipe(inject(
             gulp.src(['./dist/*.js', './dist/*.css'], { read: false }),
