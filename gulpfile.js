@@ -3,14 +3,16 @@ var cleanCSS = require('gulp-clean-css');
 var uglify = require("gulp-uglify");
 var concat = require("gulp-concat");
 var wiredep = require('wiredep').stream;
-var connect = require('gulp-connect');
 var inject = require('gulp-inject');
 var removeCode = require('gulp-remove-code');
+var browserSync = require('browser-sync').create();
 
 var js = [
     './bower_components/angular/angular.min.js',
     './bower_components/angular-mocks/angular-mocks.js',
-    './app/controllers/controller.js'
+    './app/*.js',
+    './app/**/*.js',
+    './app/**/**/*.js'
 ];
 
 gulp.task('inject', function () {
@@ -22,14 +24,27 @@ gulp.task('inject', function () {
         .pipe(gulp.dest('./'));
 });
 
+gulp.task('inject-build', ['minify-css', 'minify-js'], function () {
+    gulp.src('./index.html')
+        .pipe(inject(
+            gulp.src(['./dist/*.js', './dist/*.css'], { read: false }),
+            {
+                transform: function (filePath, file, i, length) {
+                    var newPath = filePath.replace('/Content/js/', '');
+                    newPath = newPath.replace('dist/', '');
+                    var splitArray = newPath.split('.');
+                    if (splitArray[newPath.split('.').length - 1] == 'js') {
+                        return `<script src=".${newPath}"></script>`;
+                    } else {
+                        return `<link rel="stylesheet" href=".${newPath}">`;
+                    }
 
-gulp.task('inject-build', function () {
-    var target = gulp.src('./index.html');
-    var sources = gulp.src(['./dist/script.min.js', './dist/*.css'], { read: false });
-
-    return target.pipe(inject(sources))
+                }
+            })
+        )
         .pipe(removeCode({ production: true }))
         .pipe(gulp.dest('./dist/'));
+
 });
 
 gulp.task('minify-css', () => {
@@ -40,23 +55,42 @@ gulp.task('minify-css', () => {
 
 gulp.task('minify-js', function () {
     uglify();
-    gulp.src(js)
+    return gulp.src(js)
         .pipe(concat('script.min.js'))
         .pipe(gulp.dest('./dist/'));
 });
 
-
-gulp.task('build', ['minify-js', 'minify-css', 'inject-build']);
-gulp.task('server', ['inject', 'connect']);
-
 gulp.task('connect', function () {
-    connect.server({
-        port: 3000
+    browserSync.init({
+        server: {
+            baseDir: "./"
+        }
     });
-
+    gulp.watch("./styles/*.css").on('change', browserSync.reload);
+    gulp.watch("./*.html").on('change', browserSync.reload);
+    gulp.watch("./app/views/**/*.html").on('change', browserSync.reload);
+    gulp.watch("./app/views/**/*.js").on('change', browserSync.reload);
+    gulp.watch("./app/*.js").on('change', browserSync.reload);
 });
 
+gulp.task('connect-dist', function () {
+    browserSync.init({
+        server: {
+            baseDir: "./dist/"
+        }
+    });
+    var restartInjectBuild = function () {
+        gulp.start('inject-build');
+    }
+    gulp.watch("./styles/*.css").on('change', restartInjectBuild);
+    gulp.watch("./app/**/*.js").on('change', restartInjectBuild);
+    gulp.watch("./*.html").on('change', restartInjectBuild);
 
-gulp.task('watch', function () {
-    gulp.watch(js, ['minify-js']);
+    gulp.watch("./dist/*.css").on('change', browserSync.reload);
+    gulp.watch("./dist/*.html").on('change', browserSync.reload);
+    gulp.watch("./dist/*.js").on('change', browserSync.reload);
 });
+
+gulp.task('build', ['inject-build']);
+gulp.task('server', ['inject', 'connect']);
+gulp.task('server:dist', ['inject-build', 'connect-dist']);

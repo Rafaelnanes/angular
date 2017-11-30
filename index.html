@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="myTest">
+<html ng-app="myApp">
 
 <head>
     <!--removeIf(production)-->
@@ -22,13 +22,24 @@
     <!--endRemoveIf(production)-->
 
     <!-- inject:js -->
-    <script src="/app/controllers/controller.js"></script>
+    <script src="/app/app.js"></script>
+    <script src="/app/auth/auth-factory.js"></script>
+    <script src="/app/auth/auth-interceptor.js"></script>
+    <script src="/app/views/main/main.js"></script>
+    <script src="/app/views/restricted/restricted.js"></script>
+    <script src="/app/views/unauthorized/unauthorized.js"></script>
     <!-- endinject -->
 
 
     <div>
-        <div ng-controller="indexController">
+        <!-- <div ng-controller="indexController">
             <h1>{{hello}}</h1>
+        </div> -->
+        <div class="container">
+            index
+        </div>
+        <div class="container">
+            <div ng-view></div>
         </div>
     </div>
 </body>
