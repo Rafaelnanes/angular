@@ -9,7 +9,7 @@ function config($httpProvider, $routeProvider) {
             controller: 'MainController',
             // controllerAs: 'vm',
             access: {
-                restricted: false
+                restricted: true
             }
         })
         .when('/restricted', {
@@ -28,6 +28,14 @@ function config($httpProvider, $routeProvider) {
                 restricted: false
             }
         })
+        .when('/login', {
+            templateUrl: 'app/views/login/login.html',
+            controller: 'LoginController',
+            // controllerAs: 'vm',
+            access: {
+                restricted: false
+            }
+        })
         .otherwise({
             redirectTo: '/'
         });
@@ -40,4 +48,5 @@ function run($rootScope, $location, $window, AuthFactory) {
             $location.path('/unauthorized');
         }
     });
+
 }

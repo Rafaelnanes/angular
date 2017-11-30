@@ -30,6 +30,15 @@ gulp.task('inject', function () {
         .pipe(gulp.dest('./'));
 });
 
+gulp.task('inject-mock', function () {
+    var target = gulp.src('./index.html');
+    var sources = gulp.src(['./app/**/*.js', './mocks/*.js', './styles/*.css'], { read: false });
+
+    return target.pipe(inject(sources))
+        .pipe(wiredep())
+        .pipe(gulp.dest('./'));
+});
+
 gulp.task('inject-build', ['minify-css', 'minify-js', 'copy-html'], function () {
     gulp.src('./index.html')
         .pipe(inject(
@@ -90,13 +99,19 @@ gulp.task('connect-dist', function () {
     }
     gulp.watch("./styles/*.css").on('change', restartInjectBuild);
     gulp.watch("./app/**/*.js").on('change', restartInjectBuild);
+    gulp.watch("./app/*.js").on('change', restartInjectBuild);
+    gulp.watch("./**/*.html").on('change', restartInjectBuild);
     gulp.watch("./*.html").on('change', restartInjectBuild);
 
     gulp.watch("./dist/*.css").on('change', browserSync.reload);
     gulp.watch("./dist/*.html").on('change', browserSync.reload);
+    gulp.watch("./dist/**/*.html").on('change', browserSync.reload);
     gulp.watch("./dist/*.js").on('change', browserSync.reload);
+    gulp.watch("./dist/**/*.js").on('change', browserSync.reload);
 });
 
 gulp.task('build', ['inject-build']);
 gulp.task('server', ['inject', 'connect']);
-gulp.task('server:dist', ['inject-build', 'connect-dist']);
+gulp.task('server-mock', ['inject-mock', 'connect']);
+gulp.task('server:dist', ['inject', 'inject-build', 'connect-dist']);
+gulp.task('server-mock:dist', ['inject-mock', 'inject-build', 'connect-dist']);
