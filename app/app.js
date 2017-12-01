@@ -7,7 +7,7 @@ function config($httpProvider, $routeProvider) {
         .when('/', {
             templateUrl: 'app/views/main/main.html',
             controller: 'MainController',
-            // controllerAs: 'vm',
+            controllerAs: 'vm',
             access: {
                 restricted: false
             }
@@ -15,7 +15,7 @@ function config($httpProvider, $routeProvider) {
         .when('/restricted', {
             templateUrl: 'app/views/restricted/restricted.html',
             controller: 'RestrictedController',
-            // controllerAs: 'vm',
+            controllerAs: 'vm',
             access: {
                 restricted: true
             }
@@ -23,7 +23,7 @@ function config($httpProvider, $routeProvider) {
         .when('/unauthorized', {
             templateUrl: 'app/views/unauthorized/unauthorized.html',
             controller: 'UnauthorizedController',
-            // controllerAs: 'vm',
+            controllerAs: 'vm',
             access: {
                 restricted: false
             }
@@ -31,7 +31,7 @@ function config($httpProvider, $routeProvider) {
         .when('/login', {
             templateUrl: 'app/views/login/login.html',
             controller: 'LoginController',
-            // controllerAs: 'vm',
+            controllerAs: 'vm',
             access: {
                 restricted: false
             }

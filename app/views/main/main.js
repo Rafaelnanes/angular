@@ -1,5 +1,6 @@
-var app = angular.module('myApp')
+var app = angular.module('myApp');
 
-app.controller('MainController', function ($scope, $http) {
-    $scope.hello = "alows";
+app.controller('MainController', function ($scope) {
+    var vm = this;
+    vm.name = "Rafael";
 });

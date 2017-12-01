@@ -4,14 +4,20 @@ function AuthFactory($window) {
 
     return {
         isLoggedIn: function () {
-            return !!this.getToken();
+            return !!this.getUser();
         },
         setToken: function (token) {
-            return $window.localStorage.setItem("myToken", JSON.stringify(token));
+            return $window.localStorage.setItem("myToken", token);
         },
         getToken: function () {
-            var token = $window.localStorage.getItem("myToken");
-            if (token === undefined) {
+            return $window.localStorage.getItem("myToken");
+        },
+        setUser: function (token) {
+            return $window.localStorage.setItem("myUser", JSON.stringify(token));
+        },
+        getUser: function () {
+            var token = $window.localStorage.getItem("myUser");
+            if (token !== undefined) {
                 token = JSON.parse(token);
             }
             return token;

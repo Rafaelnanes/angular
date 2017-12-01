@@ -1,15 +1,16 @@
 var app = angular.module('myApp');
 app.controller('LoginController', function ($scope, $http, LoginService, AuthFactory) {
-    $scope.user = {};
-    $scope.submit = function () {
-        LoginService.doLogin($scope.user.login, $scope.user.password).then(function () {
-            console.log('tokenLogin', AuthFactory.getToken());
+    var vm = this;
+    vm.user = {};
+    vm.submit = function () {
+        LoginService.doLogin(vm.user.login, vm.user.password).then(function () {
+            console.log('tokenLogin', AuthFactory.getUser());
         });
     };
 
-    $scope.clearToken = function () {
-        LoginService.clearToken();
-        console.log('tokenLogin', AuthFactory.getToken());
+    vm.clearUser = function () {
+        LoginService.clearUser();
+        console.log('tokenLogin', AuthFactory.getUser());
     };
 });
 
