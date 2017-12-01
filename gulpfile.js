@@ -86,6 +86,7 @@ gulp.task('connect', function () {
     gulp.watch("./app/views/**/*.html").on('change', browserSync.reload);
     gulp.watch("./app/views/**/*.js").on('change', browserSync.reload);
     gulp.watch("./app/*.js").on('change', browserSync.reload);
+    gulp.watch("./app/**/*.js").on('change', browserSync.reload);
 });
 
 gulp.task('connect-dist', function () {
@@ -114,4 +115,3 @@ gulp.task('build', ['inject-build']);
 gulp.task('server', ['inject', 'connect']);
 gulp.task('server-mock', ['inject-mock', 'connect']);
 gulp.task('server:dist', ['inject', 'inject-build', 'connect-dist']);
-gulp.task('server-mock:dist', ['inject-mock', 'inject-build', 'connect-dist']);

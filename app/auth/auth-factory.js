@@ -1,11 +1,20 @@
 angular.module('myApp').factory('AuthFactory', AuthFactory);
 
-function AuthFactory() {
-    return {
-        auth: auth
-    };
+function AuthFactory($window) {
 
-    var auth = {
-        isLoggedIn: false
+    return {
+        isLoggedIn: function () {
+            return !!this.getToken();
+        },
+        setToken: function (token) {
+            return $window.localStorage.setItem("myToken", JSON.stringify(token));
+        },
+        getToken: function () {
+            var token = $window.localStorage.getItem("myToken");
+            if (token === undefined) {
+                token = JSON.parse(token);
+            }
+            return token;
+        }
     };
 }
