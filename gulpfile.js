@@ -84,6 +84,7 @@ gulp.task('connect', function () {
     gulp.watch("./styles/*.css").on('change', browserSync.reload);
     gulp.watch("./*.html").on('change', browserSync.reload);
     gulp.watch("./app/views/**/*.html").on('change', browserSync.reload);
+    gulp.watch("./app/**/**/*.html").on('change', browserSync.reload);
     gulp.watch("./app/views/**/*.js").on('change', browserSync.reload);
     gulp.watch("./app/*.js").on('change', browserSync.reload);
     gulp.watch("./app/**/*.js").on('change', browserSync.reload);
@@ -107,6 +108,7 @@ gulp.task('connect-dist', function () {
     gulp.watch("./dist/*.css").on('change', browserSync.reload);
     gulp.watch("./dist/*.html").on('change', browserSync.reload);
     gulp.watch("./dist/**/*.html").on('change', browserSync.reload);
+    gulp.watch("./dist/**/**/*.html").on('change', browserSync.reload);
     gulp.watch("./dist/*.js").on('change', browserSync.reload);
     gulp.watch("./dist/**/*.js").on('change', browserSync.reload);
 });

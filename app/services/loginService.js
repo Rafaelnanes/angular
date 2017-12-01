@@ -1,4 +1,4 @@
-angular.module('myApp').service('LoginService', function ($http, $window, AuthFactory) {
+angular.module('myApp').service('LoginService', function ($http, $rootScope, $window, AuthFactory) {
 
     var doLogin = function (login, password) {
         var user = {
@@ -13,12 +13,15 @@ angular.module('myApp').service('LoginService', function ($http, $window, AuthFa
                 var base64 = base64Url.replace('-', '+').replace('_', '/');
                 var userFromToken = JSON.parse(decodeURIComponent(escape(window.atob(base64))));
                 AuthFactory.setUser(userFromToken);
+                $rootScope.$broadcast('$isUserLoggedIn', true);
             }
         });
     };
 
     var clearUser = function () {
         $window.localStorage.removeItem('myUser');
+        $window.localStorage.removeItem('myToken');
+        $rootScope.$broadcast('$isUserLoggedIn', false);
     };
 
     return {
