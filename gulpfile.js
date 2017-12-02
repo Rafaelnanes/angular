@@ -11,6 +11,11 @@ var js = [
     './bower_components/angular/angular.min.js',
     './bower_components/angular-mocks/angular-mocks.js',
     './bower_components/angular-route/angular-route.js',
+    './bower_components/angular-route/angular-route.js',
+    './bower_components/jquery/dist/jquery.js',
+    './bower_components/bootstrap/dist/js/bootstrap.js',
+    './bower_components/angular-toastr/dist/angular-toastr.tpls.js',
+    './bower_components/angular-animate/angular-animate.js',
     './app/*.js',
     './app/**/*.js',
     './app/**/**/*.js'
@@ -52,7 +57,7 @@ gulp.task('inject-mock', function () {
 gulp.task('inject-build', ['minify-css', 'minify-js', 'copy-html'], function () {
     gulp.src('./index.html')
         .pipe(inject(
-            gulp.src(['./dist/*.js', './dist/*.css'], { read: false }),
+            gulp.src(['./dist/*.js', './dist/app.css', './dist/*.css'], { read: false }),
             {
                 transform: function (filePath, file, i, length) {
                     var newPath = filePath.replace('/Content/js/', '');
@@ -73,7 +78,11 @@ gulp.task('inject-build', ['minify-css', 'minify-js', 'copy-html'], function () 
 });
 
 gulp.task('minify-css', () => {
-    return gulp.src(['styles/app.css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'])
+    return gulp.src([
+        'styles/app.css',
+        'bower_components/bootstrap/dist/css/bootstrap.min.css',
+        'bower_components/angular-toastr/dist/angular-toastr.css'
+    ])
         .pipe(cleanCSS({ compatibility: 'ie8' }))
         .pipe(gulp.dest('./dist/'));
 });

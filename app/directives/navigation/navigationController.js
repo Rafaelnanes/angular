@@ -10,7 +10,7 @@ app.controller('NavigationController', function ($scope, AuthFactory, LoginServi
     }
 
     vm.logout = function () {
-        LoginService.clearToken();
+        LoginService.clearUser();
         vm.isLoggedIn = false;
     };
 

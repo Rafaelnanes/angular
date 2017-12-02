@@ -22,7 +22,7 @@
                     <a href="#!/login">Login</a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" ng-if="vm.isLoggedIn">
                 <li>
                     <p class="navbar-text">Welcome back
                         <b>{{ vm.loggedInUser }}</b>

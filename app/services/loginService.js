@@ -17,13 +17,14 @@ angular.module('myApp').service('LoginService', function ($http, $rootScope, $wi
                 AuthFactory.setToken(baseToken);
                 $rootScope.$broadcast('$isUserLoggedIn', true);
             }
+            return data;
         }).catch(function (data) {
-            console.error('Error in login: ', data);
             clearUser();
+            return data;
         });
     };
 
-    var clearToken = function () {
+    var clearUser = function () {
         $window.localStorage.removeItem('myUser');
         $window.localStorage.removeItem('myToken');
         $rootScope.$broadcast('$isUserLoggedIn', false);
@@ -31,6 +32,6 @@ angular.module('myApp').service('LoginService', function ($http, $rootScope, $wi
 
     return {
         doLogin: doLogin,
-        clearToken: clearToken
+        clearUser: clearUser
     };
 });

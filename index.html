@@ -3,8 +3,9 @@
 
 <head>
     <!--removeIf(production)-->
-    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components\bootstrap\dist\css\bootstrap.min.css">
     <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css" />
     <!-- endbower -->
     <!--endRemoveIf(production)-->
     <!-- inject:css -->
@@ -26,6 +27,8 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
     <!-- endbower -->
     <!--endRemoveIf(production)-->
 
@@ -36,8 +39,8 @@
     <script src="/app/services/loginService.js"></script>
     <script src="/app/views/login/loginController.js"></script>
     <script src="/app/views/main/mainController.js"></script>
-    <script src="/app/views/unauthorized/unauthorizedController.js"></script>
     <script src="/app/views/restricted/restrictedController.js"></script>
+    <script src="/app/views/unauthorized/unauthorizedController.js"></script>
     <script src="/app/directives/navigation/navigationController.js"></script>
     <script src="/app/directives/navigation/ui-navigation.js"></script>
     <!-- endinject -->
