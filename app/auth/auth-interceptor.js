@@ -1,6 +1,6 @@
 angular.module('myApp').factory('AuthInterceptor', AuthInterceptor);
 
-function AuthInterceptor($location, $q, $window, AuthFactory) {
+function AuthInterceptor($location, $q, $window, AuthFactory, CONSTANTS) {
     return {
         request: request,
         response: response,
@@ -21,9 +21,9 @@ function AuthInterceptor($location, $q, $window, AuthFactory) {
 
     function response(response) {
         if (response.status === 401) {
-            $window.localStorage.removeItem('myUser');
-            $window.localStorage.removeItem('myToken');
-            $rootScope.$broadcast('$isUserLoggedIn', false);
+            localStorage.removeItem('myUser');
+            localStorage.removeItem('myToken');
+            $rootScope.$broadcast(CONSTANTS.EVENT.IS_USER_LOGGED_IN, false);
         }
 
         return response;

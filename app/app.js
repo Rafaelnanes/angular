@@ -12,14 +12,6 @@ function config($httpProvider, $routeProvider) {
                 restricted: false
             }
         })
-        .when('/restricted', {
-            templateUrl: 'app/views/restricted/restricted.html',
-            controller: 'RestrictedController',
-            controllerAs: 'vm',
-            access: {
-                restricted: true
-            }
-        })
         .when('/unauthorized', {
             templateUrl: 'app/views/unauthorized/unauthorized.html',
             controller: 'UnauthorizedController',
@@ -36,17 +28,50 @@ function config($httpProvider, $routeProvider) {
                 restricted: false
             }
         })
+        .when('/user-center', {
+            templateUrl: 'app/views/user/center/user-center.html',
+            controller: 'UserCenterController',
+            controllerAs: 'vm',
+            access: {
+                restricted: true
+            }
+        })
+        .when('/user-list', {
+            templateUrl: 'app/views/user/list/user-list.html',
+            controller: 'UserListController',
+            controllerAs: 'vm',
+            access: {
+                restricted: true
+            }
+        })
         .otherwise({
             redirectTo: '/'
         });
 }
 
-function run($rootScope, $location, $window, AuthFactory) {
+function run($rootScope, $location, $window, AuthFactory, CONSTANTS) {
+
+    $rootScope.hasPermission = function (permission) {
+        var hasPermission = false;
+        var user = AuthFactory.getUser();
+        if (!!user) {
+            var permissions = user.permissions;
+            permissions.forEach(function (obj) {
+                if (obj === permission) {
+                    hasPermission = true;
+                }
+            });
+        }
+        return hasPermission;
+    };
+
     $rootScope.$on('$routeChangeStart', function (event, nextRoute, currentRoute) {
         if (nextRoute.access !== undefined && nextRoute.access.restricted && !AuthFactory.isLoggedIn()) {
             event.preventDefault();
-            $location.path('/login');
+            $location.path('/unauthorized');
         }
     });
 
 }
+
+

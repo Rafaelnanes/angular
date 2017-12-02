@@ -1,4 +1,4 @@
-angular.module('myApp').service('LoginService', function ($http, $rootScope, $window, AuthFactory) {
+angular.module('myApp').service('LoginService', function ($http, $rootScope, $window, AuthFactory, CONSTANTS) {
 
     var doLogin = function (login, password) {
         var user = {
@@ -10,12 +10,12 @@ angular.module('myApp').service('LoginService', function ($http, $rootScope, $wi
         }).then(function (data) {
             var pToken = data.headers().authorization;
             if (pToken !== undefined) {
-                var userInfo = pToken.split('.')[0];
-                var baseToken = pToken.split('.')[1];
+                var userInfo = pToken.split('||')[0];
+                var baseToken = pToken.split('||')[1];
                 var userFromToken = JSON.parse(decodeURIComponent(escape(window.atob(userInfo))));
                 AuthFactory.setUser(userFromToken);
                 AuthFactory.setToken(baseToken);
-                $rootScope.$broadcast('$isUserLoggedIn', true);
+                $rootScope.$broadcast(CONSTANTS.EVENT.IS_USER_LOGGED_IN, true);
             }
             return data;
         }).catch(function (data) {
@@ -25,9 +25,9 @@ angular.module('myApp').service('LoginService', function ($http, $rootScope, $wi
     };
 
     var clearUser = function () {
-        $window.localStorage.removeItem('myUser');
-        $window.localStorage.removeItem('myToken');
-        $rootScope.$broadcast('$isUserLoggedIn', false);
+        localStorage.removeItem(CONSTANTS.LOCAL_STORAGE.USER);
+        localStorage.removeItem(CONSTANTS.LOCAL_STORAGE.TOKEN);
+        $rootScope.$broadcast(CONSTANTS.EVENT.IS_USER_LOGGED_IN, false);
     };
 
     return {
