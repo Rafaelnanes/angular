@@ -5,20 +5,25 @@ angular.module('myApp').service('LoginService', function ($http, $rootScope, $wi
             login: login,
             password: password
         };
-        return $http.post('http://localhost:8080/login', user).then(function (data) {
+        return $http.post('http://localhost:8080/login', user, {
+
+        }).then(function (data) {
             var pToken = data.headers().authorization;
             if (pToken !== undefined) {
-                var token = pToken.split('.')[0];
-                var base64Url = pToken.split('.')[1];
-                var base64 = base64Url.replace('-', '+').replace('_', '/');
-                var userFromToken = JSON.parse(decodeURIComponent(escape(window.atob(base64))));
+                var userInfo = pToken.split('.')[0];
+                var baseToken = pToken.split('.')[1];
+                var userFromToken = JSON.parse(decodeURIComponent(escape(window.atob(userInfo))));
                 AuthFactory.setUser(userFromToken);
+                AuthFactory.setToken(baseToken);
                 $rootScope.$broadcast('$isUserLoggedIn', true);
             }
+        }).catch(function (data) {
+            console.error('Error in login: ', data);
+            clearUser();
         });
     };
 
-    var clearUser = function () {
+    var clearToken = function () {
         $window.localStorage.removeItem('myUser');
         $window.localStorage.removeItem('myToken');
         $rootScope.$broadcast('$isUserLoggedIn', false);
@@ -26,6 +31,6 @@ angular.module('myApp').service('LoginService', function ($http, $rootScope, $wi
 
     return {
         doLogin: doLogin,
-        clearUser: clearUser
+        clearToken: clearToken
     };
 });

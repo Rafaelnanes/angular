@@ -17,8 +17,18 @@ var js = [
 ];
 
 gulp.task('copy-html', function () {
+    gulp.start('copy-html-views');
+    gulp.start('copy-html-directives');
+});
+
+gulp.task('copy-html-views', function () {
     return gulp.src('./app/views/**/*.html')
         .pipe(gulp.dest('./dist/app/views/'));
+});
+
+gulp.task('copy-html-directives', function () {
+    return gulp.src('./app/directives/**/*.html')
+        .pipe(gulp.dest('./dist/app/directives/'));
 });
 
 gulp.task('inject', function () {
@@ -63,7 +73,7 @@ gulp.task('inject-build', ['minify-css', 'minify-js', 'copy-html'], function () 
 });
 
 gulp.task('minify-css', () => {
-    return gulp.src('styles/*.css')
+    return gulp.src(['styles/app.css', 'bower_components/bootstrap/dist/css/bootstrap.min.css'])
         .pipe(cleanCSS({ compatibility: 'ie8' }))
         .pipe(gulp.dest('./dist/'));
 });
@@ -96,14 +106,6 @@ gulp.task('connect-dist', function () {
             baseDir: "./dist/"
         }
     });
-    var restartInjectBuild = function () {
-        gulp.start('inject-build');
-    }
-    gulp.watch("./styles/*.css").on('change', restartInjectBuild);
-    gulp.watch("./app/**/*.js").on('change', restartInjectBuild);
-    gulp.watch("./app/*.js").on('change', restartInjectBuild);
-    gulp.watch("./**/*.html").on('change', restartInjectBuild);
-    gulp.watch("./*.html").on('change', restartInjectBuild);
 
     gulp.watch("./dist/*.css").on('change', browserSync.reload);
     gulp.watch("./dist/*.html").on('change', browserSync.reload);
@@ -111,6 +113,7 @@ gulp.task('connect-dist', function () {
     gulp.watch("./dist/**/**/*.html").on('change', browserSync.reload);
     gulp.watch("./dist/*.js").on('change', browserSync.reload);
     gulp.watch("./dist/**/*.js").on('change', browserSync.reload);
+
 });
 
 gulp.task('build', ['inject-build']);

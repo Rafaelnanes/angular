@@ -45,7 +45,7 @@ function run($rootScope, $location, $window, AuthFactory) {
     $rootScope.$on('$routeChangeStart', function (event, nextRoute, currentRoute) {
         if (nextRoute.access !== undefined && nextRoute.access.restricted && !AuthFactory.isLoggedIn()) {
             event.preventDefault();
-            $location.path('/unauthorized');
+            $location.path('/login');
         }
     });
 
